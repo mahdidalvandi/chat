@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import sendPic from "../public/send.png";
-import delbtn from "../public/delbtn.png";
+
 const ChatInput = ({ msg, setMsg, sendChat }) => {
   return (
     <footer className="w-full">

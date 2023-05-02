@@ -11,7 +11,7 @@ const Chat = ({ currentUser }) => {
   const [isSearched, setIsSearched] = useState(false);
   const [messages, setMessages] = useState([]);
   const [chatPageId, setChatPageId] = useState(1);
-  const [reply, setReply] = useState(["we get your message"]);
+  const [reply, setReply] = useState([]);
   const [msg, setMsg] = useState("");
   // user and message
   const [userdata, setUserData] = useState({});
@@ -58,11 +58,14 @@ const Chat = ({ currentUser }) => {
       const newMessages = generateNewMessages(msg);
       setMessages(newMessages);
 
-      // const response = await axios.post("/user/message", {
-      //   from: currentUser.username,
-      //   message: newMessages,
-      // });
-      // setReply(response.data);
+      const response = await axios.post(
+        "https://172.22.30.22:5443/chat/message",
+        {
+          from: currentUser.username,
+          message: msg,
+        }
+      );
+      setReply(response.data);
 
       const newUserchat = {
         messages: newMessages,

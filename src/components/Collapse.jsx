@@ -10,7 +10,7 @@ const Collapse = ({ setCollapsed, collapsed }) => {
       onClick={collapseHandler}
       className={
         collapsed
-          ? "relative block bg-zinc-300 w-6 h-6 top-56 left-56 z-10 rounded-xl rotate-180"
+          ? "relative md:hidden block bg-zinc-300 w-6 h-6 top-56 left-56 z-10 rounded-xl rotate-180"
           : "relative grid bg-zinc-400 w-6 h-6 top-56 -right-3 z-10 rounded-xl rotate-180"
       }
     >

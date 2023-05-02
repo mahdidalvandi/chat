@@ -66,11 +66,13 @@ const SearchPage = ({ userdata, messages, reply }) => {
               </div>
             </div>
             <div className="text-sm items-end">
-              <p className="text-black text-right text-xs">Sent now</p>
+              <p className="text-black text-right text-xs">{item.replydate}</p>
               <div className="flex items-end min-w-max gap-1 mt-2 ">
                 <div className="text-black min-w-[20px] rounded-md p-3 bg-[#64d3ff]">
                   <div className="leading-relaxed break-words">
-                    <div className="whitespace-pre-wrap text-black">{item}</div>
+                    <div className="whitespace-pre-wrap text-black">
+                      {item.replymessage}
+                    </div>
                   </div>
                 </div>
                 <div className="flex flex-col">
