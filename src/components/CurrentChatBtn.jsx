@@ -42,7 +42,7 @@ const CurrentChatBtn = ({ chatPageId }) => {
                   xlink="http://www.w3.org/1999/xlink"
                   aria-hidden="true"
                   role="img"
-                  class=" iconify iconify--ri"
+                  
                   width="1em"
                   height="1em"
                   viewBox="0 0 24 24"

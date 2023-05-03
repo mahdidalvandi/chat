@@ -13,7 +13,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     handleValidation();
-    const { data } = await axios.post("/user/login", {
+    const { data } = await axios.post("https://172.22.30.22:5443/user/login", {
       password,
       username,
     });
@@ -21,9 +21,12 @@ const Login = () => {
       toast.error(data.msg);
     }
     if (data.status === true) {
-      localStorage.setItem("chatgpt", JSON.stringify(data.user));
+     
+      localStorage.setItem("chatgpt", JSON.stringify(data));
+      
       navigate("/");
     }
+    console.log(data)
   };
   useEffect(() => {
     if (localStorage.getItem("chatgpt")) {

@@ -1,37 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ChatInput from "../components/ChatInput";
 import DefaultChatPage from "../pages/DefaultChatPage";
-import SearchPage from "../pages/SearchPage";
+import Conversation from "../pages/Conversation";
 import SideBar from "./SideBar";
 import Collapse from "../components/Collapse";
-import { Navigate, useNavigate } from "react-router-dom";
 import CurrentChatBtn from "../components/CurrentChatBtn";
+import axios from "axios";
 
 const Chat = ({ currentUser }) => {
+
   const [isSearched, setIsSearched] = useState(false);
+  const [msg, setMsg] = useState("");
   const [messages, setMessages] = useState([]);
   const [chatPageId, setChatPageId] = useState(1);
-  const [reply, setReply] = useState([]);
-  const [msg, setMsg] = useState("");
+  const [rply, setRply] = useState("");
+ const [replies , setReplies] = useState([])
   // user and message
-  const [userdata, setUserData] = useState({});
+  const [userdata, setUserData] = useState([]);
   const [collapsed, setCollapsed] = useState(true);
   const [chatlist, setchatlist] = useState([]);
+
+  let user = JSON.parse(localStorage.getItem('chatgpt'));
+ 
+  const token = `Bearer ${user.token}`
 
   const generatenewchatpage = () => {
     setChatPageId([Math.floor(Math.random() * 50000000)]);
     return;
   };
 
-  const Data = [{ userdata }, { chatPageId }, { reply }];
 
   /* Add new chat */
 
   const addNewChat = async (e) => {
     e.preventDefault();
 
-    // const response = await axios.post("/user/addnewchat", {
-    //   currentUser,
+    // const response = await axios.post("/chat/addnewchat", {
+    //  from: currentUser
     // });
 
     generatenewchatpage();
@@ -51,30 +56,43 @@ const Chat = ({ currentUser }) => {
     msgs.push({ fromSelf: true, message: msg });
     return msgs;
   };
+  const  generateNewReplies = (rply) =>  {
+    const replys = [...replies];
+    replys.push({ rply });
+    return replys;
+  };
+
   const sendChat = async (event) => {
+    event.preventDefault()
     setIsSearched(true);
-    event.preventDefault();
+
     if (msg.length > 0) {
-      const newMessages = generateNewMessages(msg);
-      setMessages(newMessages);
-
-      const response = await axios.post(
-        "https://172.22.30.22:5443/chat/message",
-        {
-          from: currentUser.username,
-          message: msg,
-        }
+      const response = await axios.post("https://172.22.30.22:5443/chat/message", {
+        from: currentUser.user.username,
+        message: msg,
+      },{headers:{
+        'Authorization': token
+      }}  
       );
-      setReply(response.data);
-
+      setRply(response.data)
+      const newReplies = generateNewReplies(rply)
+      const newMessages = generateNewMessages(msg);
+  
+      setMessages(newMessages);     
+      setReplies(newReplies)
       const newUserchat = {
         messages: newMessages,
+        replies: newReplies , 
         currentUser,
       };
       setUserData(newUserchat);
-      setMsg("");
+      console.log(replies)
+   
+
+
+      setMsg("")
     }
-  };
+  }; 
 
   return (
     <>
@@ -100,14 +118,19 @@ const Chat = ({ currentUser }) => {
                     </h1>
                     {chatPageId && !isSearched && <DefaultChatPage />}
                     {isSearched && (
-                      <SearchPage
+                    
+                      <Conversation
+                        key={chatPageId}
+                        replies={replies}
                         chatPageId={chatPageId}
                         userdata={userdata}
                         messages={messages}
-                        reply={reply}
+                        rply={rply}
                       />
                     )}
+                      
                   </div>
+                  <div className="w-full h-44 flex-shrink-0" />
                   {/* Input */}
                   <ChatInput
                     isSearched={isSearched}

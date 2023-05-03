@@ -20,7 +20,7 @@ const Register = () => {
   const registerButton = async (event) => {
     event.preventDefault();
     if (handleValidation()) {
-      const { data } = await axios.post("/user/register", {
+      const { data } = await axios.post("https://172.22.30.22:5443/user/register", {
         password,
         username,
         email,
@@ -29,9 +29,8 @@ const Register = () => {
         toast.error(data.msg);
       }
       if (data.status === true) {
-        console;
-        localStorage.setItem("chatgpt", JSON.stringify(data.user));
-        navigate("/");
+       
+        navigate("/login");
       }
     }
   };

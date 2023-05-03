@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 const Collapse = ({ setCollapsed, collapsed }) => {
   const collapseHandler = () => {
